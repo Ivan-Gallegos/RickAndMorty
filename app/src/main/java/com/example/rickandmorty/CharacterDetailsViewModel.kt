@@ -6,25 +6,25 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.network.model.CharactersPage
+import com.example.network.model.Character
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class CharacterDetailsViewModel : ViewModel() {
+    private val tag = this::class.simpleName
+    private val _state: MutableState<Character> = mutableStateOf(Character())
+    val state: State<Character> = _state
 
-    private val _state: MutableState<CharactersPage> = mutableStateOf(CharactersPage())
-    val state: State<CharactersPage> = _state
-
-    fun getCharactersPage(page: Int = 1) {
+    fun getCharacterDetails(id: Int) {
         viewModelScope.launch {
-            Repo.getCharactersPage(page).run {
+            Repo.getCharacterDetails(id).run {
                 if (isSuccessful) {
                     val body = body()
-                    Log.d("MainViewModel", "$body")
+                    Log.d(tag, "$body")
                     body?.let {
                         _state.value = it
                     }
                 } else {
-                    Log.e("MainViewModel", errorBody().toString())
+                    Log.e(tag, errorBody().toString())
                 }
             }
 

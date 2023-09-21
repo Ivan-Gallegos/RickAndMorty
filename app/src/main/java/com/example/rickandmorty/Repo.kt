@@ -17,5 +17,6 @@ object Repo {
     private val rMService = retrofit.create<RMService>()
 
     suspend fun getCharactersPage(page: Int) = rMService.getCharacterPage(page)
+    suspend fun getCharacterDetails(id: Int) = rMService.getSingleCharacter(id)
 
 }
