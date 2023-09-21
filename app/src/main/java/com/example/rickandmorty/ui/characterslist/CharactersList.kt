@@ -30,17 +30,14 @@ import com.example.rickandmorty.ui.theme.Typography
 fun CharactersList(
     state: CharactersPage = CharactersPage(),
     onItemClick: (Character) -> Unit = {},
-) = Box(
-    contentAlignment = Alignment.Center,
-    modifier = Modifier.fillMaxSize(),
-) {
+) = Box(Modifier.fillMaxSize(), Alignment.Center) {
     if (state.characters.isEmpty()) {
         CircularProgressIndicator(Modifier.size(200.dp))
     } else {
         LazyColumn(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(16.dp),
         ) {
             items(state.characters) {
                 Card(
@@ -52,8 +49,8 @@ fun CharactersList(
                     Text(
                         it.run { "$id. $name\nStatus: $status\nSpecies: $species" },
                         Modifier.padding(16.dp),
-                        style = Typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        MaterialTheme.colorScheme.onPrimary,
+                        style = Typography.headlineLarge
                     )
                 }
             }
@@ -65,10 +62,7 @@ fun CharactersList(
 @Composable
 fun CharactersListLoading() = RickAndMortyTheme {
     // A surface container using the 'background' color from the theme
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
-    ) {
+    Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         CharactersList()
     }
 }
@@ -77,10 +71,7 @@ fun CharactersListLoading() = RickAndMortyTheme {
 @Composable
 fun CharactersListPreview() = RickAndMortyTheme {
     // A surface container using the 'background' color from the theme
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background,
-    ) {
+    Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
         CharactersList(
             CharactersPage(
                 characters = listOf(

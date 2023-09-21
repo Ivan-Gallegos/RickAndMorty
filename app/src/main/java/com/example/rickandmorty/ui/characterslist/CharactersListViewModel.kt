@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.network.model.CharactersPage
 import com.example.rickandmorty.Repo
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class CharactersListViewModel : ViewModel() {
@@ -15,22 +16,17 @@ class CharactersListViewModel : ViewModel() {
     private val _state: MutableState<CharactersPage> = mutableStateOf(CharactersPage())
     val state: State<CharactersPage> = _state
 
-    fun getCharactersPage(page: Int = 1) {
-        viewModelScope.launch {
-            Repo.getCharactersPage(page).run {
-                if (isSuccessful) {
-                    val body = body()
-                    Log.d(tag, "$body")
-                    body?.let {
-                        _state.value = it
-                    }
-                } else {
-                    Log.e(tag, errorBody().toString())
+    fun getCharactersPage(page: Int = 1): Job = viewModelScope.launch {
+        Repo.getCharactersPage(page).run {
+            if (isSuccessful) {
+                val body = body()
+                Log.d(tag, "$body")
+                body?.let {
+                    _state.value = it
                 }
+            } else {
+                Log.e(tag, errorBody().toString())
             }
-
         }
-
     }
-
 }

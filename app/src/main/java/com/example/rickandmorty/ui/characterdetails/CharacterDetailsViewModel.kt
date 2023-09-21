@@ -9,47 +9,43 @@ import androidx.lifecycle.viewModelScope
 import com.example.network.model.Character
 import com.example.network.model.LocationDetails
 import com.example.rickandmorty.Repo
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class CharacterDetailsViewModel : ViewModel() {
     private val tag = this::class.simpleName
-    private val _state: MutableState<CharacterDetailsState> = mutableStateOf(CharacterDetailsState())
+    private val _state: MutableState<CharacterDetailsState> =
+        mutableStateOf(CharacterDetailsState())
     val state: State<CharacterDetailsState> = _state
 
-    fun getCharacterDetails(id: Int) {
-        viewModelScope.launch {
-            Repo.getCharacterDetails(id).run {
-                if (isSuccessful) {
-                    val body = body()
-                    Log.d(tag, "$body")
-                    body?.let {
-                        _state.value = state.value.copy(character = it)
-                        getLocationDetails(it.location.url)
-                    }
-                } else {
-                    Log.e(tag, errorBody().toString())
+    fun getCharacterDetails(id: Int): Job = viewModelScope.launch {
+        Repo.getCharacterDetails(id).run {
+            if (isSuccessful) {
+                val body = body()
+                Log.d(tag, "$body")
+                body?.let {
+                    _state.value = state.value.copy(character = it)
+                    getLocationDetails(it.location.url)
                 }
-            }
-
-        }
-
-    }
-
-    private fun getLocationDetails(url: String) {
-        viewModelScope.launch {
-            Repo.getLocationDetails(url).run {
-                if (isSuccessful) {
-                    val body = body()
-                    Log.d(tag, "$body")
-                    body?.let {
-                        _state.value = state.value.copy(locationDetails = it)
-                    }
-                } else {
-                    Log.e(tag, errorBody().toString())
-                }
+            } else {
+                Log.e(tag, errorBody().toString())
             }
         }
     }
+
+    private fun getLocationDetails(url: String): Job = viewModelScope.launch {
+          Repo.getLocationDetails(url).run {
+              if (isSuccessful) {
+                  val body = body()
+                  Log.d(tag, "$body")
+                  body?.let {
+                      _state.value = state.value.copy(locationDetails = it)
+                  }
+              } else {
+                  Log.e(tag, errorBody().toString())
+              }
+          }
+      }
 
 }
 
