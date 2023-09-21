@@ -18,5 +18,6 @@ object Repo {
 
     suspend fun getCharactersPage(page: Int) = rMService.getCharacterPage(page)
     suspend fun getCharacterDetails(id: Int) = rMService.getSingleCharacter(id)
+    suspend fun getLocationDetails(url: String) = rMService.getLocationDetails(url)
 
 }

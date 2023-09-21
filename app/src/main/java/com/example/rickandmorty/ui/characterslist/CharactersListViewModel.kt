@@ -1,4 +1,4 @@
-package com.example.rickandmorty
+package com.example.rickandmorty.ui.characterslist
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -6,17 +6,18 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.network.model.Character
+import com.example.network.model.CharactersPage
+import com.example.rickandmorty.Repo
 import kotlinx.coroutines.launch
 
-class CharacterDetailsViewModel : ViewModel() {
+class CharactersListViewModel : ViewModel() {
     private val tag = this::class.simpleName
-    private val _state: MutableState<Character> = mutableStateOf(Character())
-    val state: State<Character> = _state
+    private val _state: MutableState<CharactersPage> = mutableStateOf(CharactersPage())
+    val state: State<CharactersPage> = _state
 
-    fun getCharacterDetails(id: Int) {
+    fun getCharactersPage(page: Int = 1) {
         viewModelScope.launch {
-            Repo.getCharacterDetails(id).run {
+            Repo.getCharactersPage(page).run {
                 if (isSuccessful) {
                     val body = body()
                     Log.d(tag, "$body")
