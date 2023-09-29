@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.network.logErrorResponse
 import com.example.network.model.Character
 import com.example.network.model.LocationDetails
 import com.example.rickandmorty.Repo
@@ -20,33 +21,22 @@ class CharacterDetailsViewModel : ViewModel() {
 
     fun getCharacterDetails(id: Int): Job = viewModelScope.launch {
         Repo.getCharacterDetails(id).run {
-            if (isSuccessful) {
-                val body = body()
-                Log.d(tag, "$body")
-                body?.let {
-                    _state.value = state.value.copy(character = it)
-                    getLocationDetails(it.location.url)
-                }
-            } else {
-                Log.e(tag, errorBody().toString())
-            }
+            if (isSuccessful) body()?.let {
+                Log.d(tag, "$it")
+                _state.value = state.value.copy(character = it)
+                getLocationDetails(it.location.url)
+            } else logErrorResponse(tag)
         }
     }
 
     private fun getLocationDetails(url: String): Job = viewModelScope.launch {
-          Repo.getLocationDetails(url).run {
-              if (isSuccessful) {
-                  val body = body()
-                  Log.d(tag, "$body")
-                  body?.let {
-                      _state.value = state.value.copy(locationDetails = it)
-                  }
-              } else {
-                  Log.e(tag, errorBody().toString())
-              }
-          }
-      }
-
+        Repo.getLocationDetails(url).run {
+            if (isSuccessful) body()?.let {
+                Log.d(tag, "$it")
+                _state.value = state.value.copy(locationDetails = it)
+            } else logErrorResponse(tag)
+        }
+    }
 }
 
 data class CharacterDetailsState(

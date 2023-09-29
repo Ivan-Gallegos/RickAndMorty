@@ -44,4 +44,5 @@ dependencies {
     //Retrofit
     api ("com.squareup.retrofit2:retrofit:2.9.0")
     api ("com.squareup.retrofit2:converter-gson:2.9.0")
+    api ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }

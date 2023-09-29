@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.network.logErrorResponse
 import com.example.network.model.CharactersPage
 import com.example.rickandmorty.Repo
 import kotlinx.coroutines.Job
@@ -18,15 +19,10 @@ class CharactersListViewModel : ViewModel() {
 
     fun getCharactersPage(page: Int = 1): Job = viewModelScope.launch {
         Repo.getCharactersPage(page).run {
-            if (isSuccessful) {
-                val body = body()
-                Log.d(tag, "$body")
-                body?.let {
-                    _state.value = it
-                }
-            } else {
-                Log.e(tag, errorBody().toString())
-            }
+            if (isSuccessful) body()?.let {
+                Log.d(tag, "$it")
+                _state.value = it
+            } else logErrorResponse(tag)
         }
     }
 }
