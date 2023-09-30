@@ -27,7 +27,7 @@ object Repo {
     // Instantiate RMService using Retrofit
     private val rMService = retrofit.create<RMService>()
 
-    suspend fun getCharactersPage(page: Int) = rMService.getCharacterPage(page)
+    suspend fun getCharactersPage(page: Int, name : String) = rMService.getCharacterPage(page, name)
     suspend fun getCharacterDetails(id: Int) = rMService.getSingleCharacter(id)
     suspend fun getLocationDetails(url: String) = rMService.getLocationDetails(url)
 

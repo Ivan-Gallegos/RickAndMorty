@@ -16,7 +16,10 @@ interface RMService {
     }
 
     @GET("character")
-    suspend fun getCharacterPage(@Query("page") page: Int): Response<CharactersPage>
+    suspend fun getCharacterPage(
+        @Query("page") page: Int,
+        @Query("name") name: String
+    ): Response<CharactersPage>
 
     @GET("character/{id}")
     suspend fun getSingleCharacter(@Path("id") id: Int): Response<Character>
