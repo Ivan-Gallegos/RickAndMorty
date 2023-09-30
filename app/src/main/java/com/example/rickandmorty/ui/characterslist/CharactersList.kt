@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.network.model.Character
 import com.example.network.model.CharactersPage
+import com.example.rickandmorty.ui.theme.Dimens.space
 import com.example.rickandmorty.ui.theme.RickAndMortyTheme
 import com.example.rickandmorty.ui.theme.Typography
 
@@ -61,7 +62,7 @@ private fun SearchField(searchQuery: String, onTextChanged: (String) -> Unit) = 
     searchQuery,
     onTextChanged,
     Modifier
-        .padding(16.dp)
+        .padding(space)
         .fillMaxWidth(),
     placeholder = { Text(text = "Search Name") })
 
@@ -84,8 +85,8 @@ private fun LazyCharacterColumn(
     listState: LazyListState, characters: List<Character>, onItemClick: (Character) -> Unit
 ) = LazyColumn(
     Modifier.fillMaxSize(),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
-    contentPadding = PaddingValues(16.dp),
+    verticalArrangement = Arrangement.spacedBy(space),
+    contentPadding = PaddingValues(space),
     state = listState
 ) {
     items(characters) {
@@ -97,7 +98,7 @@ private fun LazyCharacterColumn(
         ) {
             Text(
                 it.run { "$id. $name\nStatus: $status\nSpecies: $species" },
-                Modifier.padding(16.dp),
+                Modifier.padding(space),
                 MaterialTheme.colorScheme.onPrimary,
                 style = Typography.headlineLarge
             )

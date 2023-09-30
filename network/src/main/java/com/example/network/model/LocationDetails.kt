@@ -18,4 +18,7 @@ data class LocationDetails(
     val type: String = "",
     @SerializedName("url")
     val url: String = ""
-)
+) {
+    private val isIdValid get() = id > 0
+    val displayId get() = if (isIdValid) id else ""
+}
